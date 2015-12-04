@@ -18,7 +18,7 @@ var allowCrossDomain = function(request, response, next) {
 var eventId = 0;
 var events = [];
 
-function createEvent(id, name, description, targetGroup, contributionsDescription, location, times){
+function createEvent(id, name, description, targetGroup, contributionsDescription, location, times, maximalAmountOfGuests){
     if(name) {
         var event = {
             id: (id) ? id : ++eventId,
@@ -28,6 +28,7 @@ function createEvent(id, name, description, targetGroup, contributionsDescriptio
             contributionsDescription: contributionsDescription,
             location:location,
             times : times,
+	    maximalAmountOfGuests : maximalAmountOfGuests,
             guests:[]
         };
         events.push(event);
@@ -76,7 +77,8 @@ var event1 = createEvent(
     {
         begin: new Date('2015-11-15T19:00:00'),
         end: new Date('2011-11-16T03:00:00')
-    }
+    },
+    20
 );
 createGuest(event1, "Michael", "Schoggi-Kuchen", "Bin sicher zu früh" );
 createGuest(event1, "Hans", "Hotdog-Cake", null );
@@ -96,7 +98,8 @@ var event2 = createEvent(
     {
         begin: new Date('2015-11-20T18:00:00'),
         end: new Date('2011-11-20T21:00:00')
-    }
+    },
+    3
 );
 
 createGuest(event2, "F. Meier", null, null );
@@ -130,7 +133,8 @@ app.post('/api/events', function(request, response) {
        request.body.targetGroup,
        request.body.contributionsDescription,
        request.body.location,
-       request.body.times
+       request.body.times,
+       request.body.maximalAmountOfGuests
    );
    if(event) {
        response.json(event);
